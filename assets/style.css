@@ -1,3 +1,7 @@
 body {
 	background: url('../images/wallup-195656.jpg');
 }
+
+#next {
+	margin-top: 20px;
+}

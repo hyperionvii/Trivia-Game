@@ -50,7 +50,7 @@ var game = {
 
 	correct: 0,
 	incorrect: 0,
-	counter: 15,
+	counter: 100,
 	time: 0,
 	countdown: function(){
 		game.counter--;
@@ -71,7 +71,7 @@ var game = {
 		for(var g=0; g<triviaQ[tQuestions].guesses.length; g++) {
 			$(".wrapper").append("<input type='radio' name='guesses-"+ tQuestions + "' value='"+ triviaQ[tQuestions].guesses[g] + "'/>" + triviaQ[tQuestions].guesses[g]);
 		}
-			$(".wrapper").append("<button id='next'> 'next' </button>");	
+			$(".wrapper").append("<br> <button id='next'> Next </button>");	
 	},
 
 	next: function() {
@@ -82,7 +82,7 @@ var game = {
 				$(".wrapper").append("<input type='radio' name='guesses-"+ tQuestions + "' value='"+ triviaQ[tQuestions].guesses[g] + "'/>" + triviaQ[tQuestions].guesses[g]);
 			}
 			
-			$(".wrapper").append("<br> <button id='next'> 'next' </button>");	
+			$(".wrapper").append("<br> <button id='next'> Next </button>");	
 	},
 
 	saveSelector: function() {
