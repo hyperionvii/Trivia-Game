@@ -1,8 +1,14 @@
 //start game and remove button
 $(".btn-primary").on('click', function(){
-	game.start()});
+	game.start()
+});
 
-//questions as an object
+//next click saves answers and repopulates questions.
+$('.wrapper').on('click', '#next', function(){
+	game.next()
+	game.saveSelector()
+});
+
 
 var triviaQ = [{
 	question:"What is the most visited National Park?",
@@ -44,90 +50,62 @@ var game = {
 
 	correct: 0,
 	incorrect: 0,
-	counter: 15, 
+	counter: 15,
+	time: 0,
 	countdown: function(){
 		game.counter--;
 		$("#counter").html("<h2> Time Remaining: <span id:'counter'>" + game.counter +" </span> Seconds </h2>");
-		if(game.counter<=0){
-			alert("Time is up!");
-			game.done();
-			game.result();
+			if(game.counter<=0){
+				alert("Time is up!");
+				game.done();
+				game.result();
 
 		}
 	},
 	start: function(){
 		$(".btn-primary").remove()
 		time = setInterval(game.countdown, 1000);
-			for(var i=0; i<triviaQ.length; i++){
-				$(".wrapper").append("<h2>" + triviaQ[i].question + "</h2>");
-			for(var x=0; x<triviaQ[i].guesses.length; x++) {
-				$(".wrapper").append("<input type='radio' name='guesses-"+ i + "' value='"+ triviaQ[i].guesses[x] + "'/>" + triviaQ[i].guesses[x])
-			}
-		}
-	},
-	done: function(){
-		$.each($("input[name=guesses-1]:checked", function(){
-			if($(this).val()==triviaQ[1].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})), 
-		$.each($("input[name= guesses-2]:checked", function(){
-			if($(this).val()==triviaQ[1].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})), 
-		$.each($("input[name=guesses-3]:checked", function(){
-			if($(this).val()==triviaQ[2].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})), 
-		$.each($("input[name= guesses-4]:checked", function(){
-			if($(this).val()==triviaQ[3].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})), 
-		$.each($("input[name= guesses-5]:checked", function(){
-			if($(this).val()==triviaQ[4].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})), 
-		$.each($("input[name= guesses-6]:checked", function(){
-			if($(this).val()==triviaQ[5].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})),
-		$.each($("input[name= guesses-7]:checked", function(){
-			if($(this).val()==triviaQ[6].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		})),
-		$.each($("input[name= guesses-8]:checked", function(){
-			if($(this).val()==triviaQ[7].answer) {
-				game.correct++;
-			}else{
-				game.incorrect++;
-			}
-		}))
+		tQuestions = 0
+		$(".wrapper").html("<h2>" + triviaQ[tQuestions].question + "</h2>");
 
-	this.result();
+		for(var g=0; g<triviaQ[tQuestions].guesses.length; g++) {
+			$(".wrapper").append("<input type='radio' name='guesses-"+ tQuestions + "' value='"+ triviaQ[tQuestions].guesses[g] + "'/>" + triviaQ[tQuestions].guesses[g]);
+		}
+			$(".wrapper").append("<button id='next'> 'next' </button>");	
+	},
+
+	next: function() {
+			tQuestions++;
+			$(".wrapper").html("<h2>" + triviaQ[tQuestions].question + "</h2>");
+			
+			for(var g=0; g<triviaQ[tQuestions].guesses.length; g++) {
+				$(".wrapper").append("<input type='radio' name='guesses-"+ tQuestions + "' value='"+ triviaQ[tQuestions].guesses[g] + "'/>" + triviaQ[tQuestions].guesses[g]);
+			}
+			
+			$(".wrapper").append("<br> <button id='next'> 'next' </button>");	
+	},
+
+	saveSelector: function() {
+
+		var questionNumber = 1
+
+		$.each($("input[name=guesses-" + questionNumber + "]:checked", function(){
+			if($(this).val()==triviaQ[questionNumber].answer) {
+				game.correct++;
+			}else{
+				game.incorrect++;
+			}
+		}));
+
+			questionNumber++;
+	},
+
+	done: function(){
+		this.result();
 	},
 
 	result: function() {
-		clearInterval(game.start().time);
+		clearInterval(time);
 		$('.wrapper h2').remove();
 		$('.wrapper').html("<h2> All Done! </h2>"); 
 		$('.wrapper').append("<h3> Correct Answer: '" + this.correct + "'</h3>");
